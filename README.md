@@ -6,11 +6,11 @@
 
 uni-admin 1.9.7
 下载地址：[https://ext.dcloud.net.cn/plugin?id=3268](https://ext.dcloud.net.cn/plugin?id=3268)
-官方文档：[https://uniapp.dcloud.io/uniCloud/admin](https://uniapp.dcloud.io/uniCloud/admin)
+[官方文档](https://uniapp.dcloud.io/uniCloud/admin)
 
 schema2code 0.5.3
 下载地址：[https://ext.dcloud.net.cn/plugin?id=4684](https://ext.dcloud.net.cn/plugin?id=4684)
-[https://uniapp.dcloud.net.cn/uniCloud/schema.html#autocode](https://uniapp.dcloud.net.cn/uniCloud/schema.html#autocode)
+[官方文档](https://uniapp.dcloud.net.cn/uniCloud/schema.html#autocode)
 
 vue 2.6.14
 
