@@ -1,0 +1,109 @@
+{
+	"bsonType": "object",
+	"required": ["product_id", "company_id"],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"product_id": {
+			"bsonType": "string",
+			"title": "关联产品",
+			"description": "关联产品",
+			"foreignKey": "asst-products._id",
+			"enum": {
+				"collection": "asst-products",
+				"orderby": "value asc",
+				"field": "_id as value, name as text"
+			}
+		},
+		"company_id": {
+			"bsonType": "string",
+			"title": "关联企业",
+			"description": "关联企业",
+			"foreignKey": "asst-companies._id",
+			"enum": {
+				"collection": "asst-companies",
+				"orderby": "value asc",
+				"field": "_id as value, name as text"
+			}
+		},
+		"status": {
+			"bsonType": "int",
+			"description": "项目状态",
+			"title": "项目状态",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "待启动",
+				"value": 0
+			}, {
+				"text": "开发中",
+				"value": 1
+			}, {
+				"text": "运维",
+				"value": 2
+			}, {
+				"text": "已完结",
+				"value": 3
+			}, {
+				"text": "停滞",
+				"value": 4
+			}]
+		},
+		"delivery_date": {
+			"bsonType": "timestamp",
+			"description": "交付日期",
+			"title": "交付日期"
+		},
+		"member_ids": {
+			"bsonType": "array",
+			"title": "项目经理",
+			"description": "负责该项目的项目经理，接收该项目的动态",
+			"foreignKey": "uni-id-users._id",
+			"enum": {
+				"collection": "uni-id-users",
+				"where": "company_id=='62f73b1d7f623b0001139e88'&&'project_manager' in role", // 中安联科company_id
+				"field": "_id as value, username as text"
+			},
+			"componentForEdit": {
+				"name": "uni-data-checkbox"
+			},
+			"permission": {
+				"write": false
+			}
+		},
+		"comment": {
+			"bsonType": "string",
+			"description": "备注",
+			"label": "备注",
+			"title": "备注",
+			"trim": "both",
+			"component": {
+				"name": "textarea"
+			}
+		},
+		"files": {
+			"bsonType": "array",
+			"title": "相关附件",
+			"componentForEdit": {
+				"name": "uni-file-picker",
+				"props": {
+					"file-mediatype": "all"
+				}
+			}
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"title": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

@@ -1,0 +1,63 @@
+{
+	"bsonType": "object",
+	"required": ["name"],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "产品名称",
+			"description": "产品名称，不允许重复",
+			"trim": "both",
+			"minLength": 2
+		},
+		"enable": {
+			"bsonType": "bool",
+			"title": "产品状态",
+			"description": "是否启用",
+			"defaultValue": true
+		},
+		"member_ids": {
+			"bsonType": "array",
+			"title": "产品成员",
+			"description": "负责该产品的人员，接收该产品及其所属项目的动态",
+			"foreignKey": "uni-id-users._id",
+			"enum": {
+				"collection": "uni-id-users",
+				"where": "company_id=='62f73b1d7f623b0001139e88'", // 中安联科company_id
+				"field": "_id as value, username as text"
+			},
+			"componentForEdit": {
+				"name": "uni-data-checkbox"
+			},
+			"permission": {
+				"write": false
+			}
+		},
+		"comment": {
+			"bsonType": "string",
+			"description": "备注",
+			"label": "备注",
+			"title": "备注",
+			"trim": "both",
+			"component": {
+				"name": "textarea"
+			}
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"title": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

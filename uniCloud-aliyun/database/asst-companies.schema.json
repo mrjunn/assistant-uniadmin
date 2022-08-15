@@ -1,0 +1,55 @@
+{
+	"bsonType": "object",
+	"required": ["name"],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "企业名称",
+			"description": "企业名称，不允许重复",
+			"trim": "both",
+			"minLength": 2
+		},
+		// "role": {
+		// 	"bsonType": "array",
+		// 	"title": "角色",
+		// 	"description": "用户角色",
+		// 	"enum": {
+		// 		"collection": "uni-id-roles",
+		// 		"field": "role_id as value, role_name as text"
+		// 	},
+		// 	"foreignKey": "uni-id-roles.role_id",
+		// 	"permission": {
+		// 		"write": false
+		// 	}
+		// },
+		"city_id": {
+			"bsonType": "string",
+			"title": "地址",
+			"description": "城市编码",
+			"foreignKey": "opendb-city-china.code",
+			"enumType": "tree",
+			"enum": {
+				"collection": "opendb-city-china",
+				"orderby": "value asc",
+				"field": "code as value, name as text, eq(type, 2) as isleaf"
+			}
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"title": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

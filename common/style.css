@@ -1,0 +1,14 @@
+.uni-forms-item .uni-data-checklist {
+	margin-top: 6px !important;
+}
+
+/* .login-box .uni-forms-item__label {
+	width: 65px !important;
+} */
+/* uni组件生成的class要加::v-deep？？以下目前都生效 */
+/* .uni-forms-item__label {
+	width: 90px !important;
+} */
+::v-deep .uni-forms-item__label {
+	width: 90px !important;
+}
