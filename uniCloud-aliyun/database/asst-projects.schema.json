@@ -2,25 +2,14 @@
 	"bsonType": "object",
 	"required": ["product_id", "company_id"],
 	"permission": {
-		"read": false,
-		"create": false,
-		"update": false,
-		"delete": false
+		"read": "'READ_ASST_PROJECTS' in auth.permission",
+		"create": "'CREATE_ASST_PROJECTS' in auth.permission",
+		"update": "'UPDATE_ASST_PROJECTS' in auth.permission",
+		"delete": "'DELETE_ASST_PROJECTS' in auth.permission"
 	},
 	"properties": {
 		"_id": {
 			"description": "ID，系统自动生成"
-		},
-		"product_id": {
-			"bsonType": "string",
-			"title": "关联产品",
-			"description": "关联产品",
-			"foreignKey": "asst-products._id",
-			"enum": {
-				"collection": "asst-products",
-				"orderby": "value asc",
-				"field": "_id as value, name as text"
-			}
 		},
 		"company_id": {
 			"bsonType": "string",
@@ -29,6 +18,17 @@
 			"foreignKey": "asst-companies._id",
 			"enum": {
 				"collection": "asst-companies",
+				"orderby": "value asc",
+				"field": "_id as value, name as text"
+			}
+		},
+		"product_id": {
+			"bsonType": "string",
+			"title": "关联产品",
+			"description": "关联产品",
+			"foreignKey": "asst-products._id",
+			"enum": {
+				"collection": "asst-products",
 				"orderby": "value asc",
 				"field": "_id as value, name as text"
 			}
@@ -89,13 +89,11 @@
 		},
 		"files": {
 			"bsonType": "array",
+			"arrayType": "file",
 			"title": "相关附件",
-			"componentForEdit": {
-				"name": "uni-file-picker",
-				"props": {
-					"file-mediatype": "all"
-				}
-			}
+			"multiple": true, // 允许选择多张图片，schema2code生效
+			"fileMediaType": "all", // 可选值 all|image|video 默认值为all,表示所有文件，image表示图片类型文件，video表示视频类型文件
+			"maxLength": 100 // 限制最大数量
 		},
 		"create_date": {
 			"bsonType": "timestamp",
@@ -103,6 +101,15 @@
 			"title": "创建时间",
 			"forceDefaultValue": {
 				"$env": "now"
+			}
+		},
+		"creator_id": {
+			"bsonType": "string",
+			"description": "创建者",
+			"title": "创建者",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
 			}
 		}
 	}

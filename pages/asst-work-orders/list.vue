@@ -21,19 +21,23 @@
         v-slot:default="{data,pagination,loading,error,options}" :options="options" loadtime="manual" @load="onqueryload">
         <uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe type="selection" @selection-change="selectionChange">
           <uni-tr>
-            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'name')" sortable @sort-change="sortChange($event, 'name')">企业名称</uni-th>
-            <uni-th align="center">地址</uni-th>
-            <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_date')" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
+            <uni-th align="center">关联项目</uni-th>
+            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'title')" sortable @sort-change="sortChange($event, 'title')">标题</uni-th>
+            <uni-th align="center" filter-type="select" :filter-data="options.filterData.type_localdata" @filter-change="filterChange($event, 'type')">工单类型</uni-th>
+            <uni-th align="center" filter-type="select" :filter-data="options.filterData.status_localdata" @filter-change="filterChange($event, 'status')">工单状态</uni-th>
             <uni-th align="center" sortable @sort-change="sortChange($event, 'creator_id')">创建者</uni-th>
+            <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_date')" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
             <uni-th align="center">操作</uni-th>
           </uni-tr>
           <uni-tr v-for="(item,index) in data" :key="index">
-            <uni-td align="center">{{item.name}}</uni-td>
-            <uni-td align="center">{{item.city_id && item.city_id[0] && item.city_id[0].text}}</uni-td>
+            <uni-td align="center">{{item.project_id && item.project_id[0] && item.project_id[0].text}}</uni-td>
+            <uni-td align="center">{{item.title}}</uni-td>
+            <uni-td align="center">{{options.type_valuetotext[item.type]}}</uni-td>
+            <uni-td align="center">{{options.status_valuetotext[item.status]}}</uni-td>
+            <uni-td align="center">{{item.creator_id && item.creator_id[0] && item.creator_id[0].text}}</uni-td>
             <uni-td align="center">
               <uni-dateformat :threshold="[0, 0]" :date="item.create_date"></uni-dateformat>
             </uni-td>
-            <uni-td align="center">{{item.creator_id && item.creator_id[0] && item.creator_id[0].text}}</uni-td>
             <uni-td align="center">
               <view class="uni-group">
                 <button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
@@ -51,7 +55,7 @@
 </template>
 
 <script>
-  import { enumConverter, filterToWhere } from '../../js_sdk/validator/asst-companies.js';
+  import { enumConverter, filterToWhere } from '../../js_sdk/validator/asst-work-orders.js';
 
   const db = uniCloud.database()
   // 表查询配置
@@ -69,7 +73,7 @@
   export default {
     data() {
       return {
-        collectionList: [ db.collection('asst-companies').field('name,city_id,create_date,creator_id').getTemp(),db.collection('opendb-city-china').field('code, name as text, eq(type, 2) as isleaf').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
+        collectionList: [ db.collection('asst-work-orders').field('project_id,title,type,status,creator_id,create_date').getTemp(),db.collection('asst-projects').field('_id, concat(arrayElemAt(company_id.name,0),arrayElemAt(product_id.name,0)) as text').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
         query: '',
         where: '',
         orderby: dbOrderBy,
@@ -78,7 +82,52 @@
         options: {
           pageSize,
           pageCurrent,
-          filterData: {},
+          filterData: {
+            "type_localdata": [
+              {
+                "text": "Bug",
+                "value": "bug"
+              },
+              {
+                "text": "需求",
+                "value": "requirement"
+              },
+              {
+                "text": "运维",
+                "value": "maintenance"
+              },
+              {
+                "text": "采购",
+                "value": "purchase"
+              },
+              {
+                "text": "现场",
+                "value": "scene"
+              },
+              {
+                "text": "其他",
+                "value": "other"
+              }
+            ],
+            "status_localdata": [
+              {
+                "text": "待审核",
+                "value": 0
+              },
+              {
+                "text": "审核未通过",
+                "value": 1
+              },
+              {
+                "text": "进行中",
+                "value": 2
+              },
+              {
+                "text": "完成",
+                "value": 3
+              }
+            ]
+          },
           ...enumConverter
         },
         imageStyles: {
@@ -86,13 +135,15 @@
           height: 64
         },
         exportExcel: {
-          "filename": "asst-companies.xls",
+          "filename": "asst-work-orders.xls",
           "type": "xls",
           "fields": {
-            "企业名称": "name",
-            "地址": "city_id",
-            "创建时间": "create_date",
-            "创建者": "creator_id"
+            "关联项目": "project_id",
+            "标题": "title",
+            "工单类型": "type",
+            "工单状态": "status",
+            "创建者": "creator_id",
+            "创建时间": "create_date"
           }
         },
         exportExcelData: []

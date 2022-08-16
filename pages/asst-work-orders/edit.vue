@@ -1,26 +1,17 @@
 <template>
   <view class="uni-container">
     <uni-forms ref="form" :model="formData" validateTrigger="bind">
-      <uni-forms-item name="company_id" label="关联企业" required>
-        <uni-data-picker v-model="formData.company_id" collection="asst-companies" orderby="value asc" field="_id as value, name as text"></uni-data-picker>
+      <uni-forms-item name="project_id" label="关联项目" required>
+        <uni-data-picker v-model="formData.project_id" collection="asst-projects,asst-companies,asst-products" field="_id as value, concat(arrayElemAt(company_id.name,0),'-',arrayElemAt(product_id.name,0)) as text"></uni-data-picker>
       </uni-forms-item>
-      <uni-forms-item name="product_id" label="关联产品" required>
-        <uni-data-picker v-model="formData.product_id" collection="asst-products" orderby="value asc" field="_id as value, name as text"></uni-data-picker>
+      <uni-forms-item name="title" label="标题" required>
+        <uni-easyinput placeholder="工单标题" v-model="formData.title" trim="both"></uni-easyinput>
       </uni-forms-item>
-      <uni-forms-item name="status" label="项目状态">
+      <uni-forms-item name="type" label="工单类型">
+        <uni-data-checkbox v-model="formData.type" :localdata="formOptions.type_localdata"></uni-data-checkbox>
+      </uni-forms-item>
+      <uni-forms-item name="status" label="工单状态">
         <uni-data-checkbox v-model="formData.status" :localdata="formOptions.status_localdata"></uni-data-checkbox>
-      </uni-forms-item>
-      <uni-forms-item name="delivery_date" label="交付日期">
-        <uni-datetime-picker return-type="timestamp" v-model="formData.delivery_date"></uni-datetime-picker>
-      </uni-forms-item>
-      <uni-forms-item name="comment" label="备注">
-        <textarea placeholder="备注" @input="binddata('comment', $event.detail.value)" class="uni-textarea-border" v-model="formData.comment" trim="both"></textarea>
-      </uni-forms-item>
-      <uni-forms-item name="files" label="相关附件">
-        <uni-file-picker file-mediatype="all" :limit="100" return-type="array" v-model="formData.files" @delete="deleteFile"></uni-file-picker>
-      </uni-forms-item>
-      <uni-forms-item name="member_ids" label="项目经理">
-        <uni-data-checkbox :multiple="true" v-model="formData.member_ids" collection="uni-id-users" where="company_id=='62f73b1d7f623b0001139e88'&&'project_manager' in role" field="_id as value, username as text"></uni-data-checkbox>
       </uni-forms-item>
       <view class="uni-button-group">
         <button type="primary" class="uni-button" style="width: 100px;" @click="submit">提交</button>
@@ -33,11 +24,11 @@
 </template>
 
 <script>
-  import { validator } from '../../js_sdk/validator/asst-projects.js';
+  import { validator } from '../../js_sdk/validator/asst-work-orders.js';
 
   const db = uniCloud.database();
   const dbCmd = db.command;
-  const dbCollectionName = 'asst-projects';
+  const dbCollectionName = 'asst-work-orders';
 
   function getValidator(fields) {
     let result = {}
@@ -54,37 +45,56 @@
   export default {
     data() {
       let formData = {
-        "company_id": "",
-        "product_id": "",
-        "status": 0,
-        "delivery_date": null,
-        "comment": "",
-        "files": [],
-        "member_ids": []
+        "project_id": "",
+        "title": "",
+        "type": "bug",
+        "status": 0
       }
       return {
         formData,
         formOptions: {
-          "status_localdata": [
+          "type_localdata": [
             {
-              "text": "待启动",
-              "value": 0
+              "text": "Bug",
+              "value": "bug"
             },
             {
-              "text": "开发中",
-              "value": 1
+              "text": "需求",
+              "value": "requirement"
             },
             {
               "text": "运维",
+              "value": "maintenance"
+            },
+            {
+              "text": "采购",
+              "value": "purchase"
+            },
+            {
+              "text": "现场",
+              "value": "scene"
+            },
+            {
+              "text": "其他",
+              "value": "other"
+            }
+          ],
+          "status_localdata": [
+            {
+              "text": "待审核",
+              "value": 0
+            },
+            {
+              "text": "审核未通过",
+              "value": 1
+            },
+            {
+              "text": "进行中",
               "value": 2
             },
             {
-              "text": "已完结",
+              "text": "完成",
               "value": 3
-            },
-            {
-              "text": "停滞",
-              "value": 4
             }
           ]
         },
@@ -104,18 +114,7 @@
       this.$refs.form.setRules(this.rules)
     },
     methods: {
-      deleteFile(file){
-			let record = {
-				url: file.tempFile.url,
-				create_date: new Date().getTime()
-			}
-			const db = uniCloud.database();
-			db.collection('asst-deleted-files').add(record).then(res=>{
-				console.log('asst-deleted-files.add', res);
-			}).catch(err=>{
-				console.log('asst-deleted-files.add fail', err);
-			})
-		},
+      
       /**
        * 验证表单并提交
        */
@@ -158,7 +157,7 @@
         uni.showLoading({
           mask: true
         })
-        db.collection(dbCollectionName).doc(id).field("company_id,product_id,status,delivery_date,comment,files,member_ids").get().then((res) => {
+        db.collection(dbCollectionName).doc(id).field("project_id,title,type,status").get().then((res) => {
           const data = res.result.data[0]
           if (data) {
             this.formData = data

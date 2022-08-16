@@ -2,7 +2,7 @@
 
 
 const validator = {
-  "company_id": {
+  "project_id": {
     "rules": [
       {
         "required": true
@@ -11,18 +11,58 @@ const validator = {
         "format": "string"
       }
     ],
-    "label": "关联企业"
+    "label": "关联项目"
   },
-  "product_id": {
+  "title": {
     "rules": [
       {
         "required": true
       },
       {
         "format": "string"
+      },
+      {
+        "minLength": 4
       }
     ],
-    "label": "关联产品"
+    "label": "标题"
+  },
+  "type": {
+    "rules": [
+      {
+        "format": "string"
+      },
+      {
+        "range": [
+          {
+            "text": "Bug",
+            "value": "bug"
+          },
+          {
+            "text": "需求",
+            "value": "requirement"
+          },
+          {
+            "text": "运维",
+            "value": "maintenance"
+          },
+          {
+            "text": "采购",
+            "value": "purchase"
+          },
+          {
+            "text": "现场",
+            "value": "scene"
+          },
+          {
+            "text": "其他",
+            "value": "other"
+          }
+        ]
+      }
+    ],
+    "defaultValue": "bug",
+    "label": "工单类型"
   },
   "status": {
     "rules": [
@@ -32,78 +72,43 @@ const validator = {
       {
         "range": [
           {
-            "text": "待启动",
+            "text": "待审核",
             "value": 0
           },
           {
-            "text": "开发中",
+            "text": "审核未通过",
             "value": 1
           },
           {
-            "text": "运维",
+            "text": "进行中",
             "value": 2
           },
           {
-            "text": "已完结",
+            "text": "完成",
             "value": 3
-          },
-          {
-            "text": "停滞",
-            "value": 4
           }
         ]
       }
     ],
     "defaultValue": 0,
-    "label": "项目状态"
-  },
-  "delivery_date": {
-    "rules": [
-      {
-        "format": "timestamp"
-      }
-    ],
-    "label": "交付日期"
-  },
-  "comment": {
-    "rules": [
-      {
-        "format": "string"
-      }
-    ],
-    "label": "备注"
-  },
-  "files": {
-    "rules": [
-      {
-        "format": "array"
-      },
-      {
-        "arrayType": "file"
-      },
-      {
-        "maxLength": 100
-      }
-    ],
-    "label": "相关附件"
-  },
-  "member_ids": {
-    "rules": [
-      {
-        "format": "array"
-      }
-    ],
-    "label": "项目经理"
+    "label": "工单状态"
   }
 }
 
 const enumConverter = {
+  "type_valuetotext": {
+    "bug": "Bug",
+    "requirement": "需求",
+    "maintenance": "运维",
+    "purchase": "采购",
+    "scene": "现场",
+    "other": "其他"
+  },
   "status_valuetotext": {
-    "0": "待启动",
-    "1": "开发中",
-    "2": "运维",
-    "3": "已完结",
-    "4": "停滞"
+    "0": "待审核",
+    "1": "审核未通过",
+    "2": "进行中",
+    "3": "完成"
   }
 }
 

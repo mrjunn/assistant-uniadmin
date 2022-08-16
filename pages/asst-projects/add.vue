@@ -1,11 +1,11 @@
 <template>
   <view class="uni-container">
     <uni-forms ref="form" :model="formData" validateTrigger="bind">
-      <uni-forms-item name="product_id" label="关联产品" required>
-        <uni-data-picker v-model="formData.product_id" collection="asst-products" orderby="value asc" field="_id as value, name as text"></uni-data-picker>
-      </uni-forms-item>
       <uni-forms-item name="company_id" label="关联企业" required>
         <uni-data-picker v-model="formData.company_id" collection="asst-companies" orderby="value asc" field="_id as value, name as text"></uni-data-picker>
+      </uni-forms-item>
+      <uni-forms-item name="product_id" label="关联产品" required>
+        <uni-data-picker v-model="formData.product_id" collection="asst-products" orderby="value asc" field="_id as value, name as text"></uni-data-picker>
       </uni-forms-item>
       <uni-forms-item name="status" label="项目状态">
         <uni-data-checkbox v-model="formData.status" :localdata="formOptions.status_localdata"></uni-data-checkbox>
@@ -17,7 +17,7 @@
         <textarea placeholder="备注" @input="binddata('comment', $event.detail.value)" class="uni-textarea-border" v-model="formData.comment" trim="both"></textarea>
       </uni-forms-item>
       <uni-forms-item name="files" label="相关附件">
-        <uni-file-picker file-mediatype="all" :multiple="true" v-model="formData.files" @delete="deleteFile"></uni-file-picker>
+        <uni-file-picker file-mediatype="all" :limit="100" return-type="array" v-model="formData.files" @delete="deleteFile"></uni-file-picker>
       </uni-forms-item>
       <uni-forms-item name="member_ids" label="项目经理">
         <uni-data-checkbox :multiple="true" v-model="formData.member_ids" collection="uni-id-users" where="company_id=='62f73b1d7f623b0001139e88'&&'project_manager' in role" field="_id as value, username as text"></uni-data-checkbox>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+	
   import { validator } from '../../js_sdk/validator/asst-projects.js';
 
   const db = uniCloud.database();
@@ -54,8 +56,8 @@
   export default {
     data() {
       let formData = {
-        "product_id": "",
         "company_id": "",
+        "product_id": "",
         "status": 0,
         "delivery_date": null,
         "comment": "",
@@ -93,12 +95,18 @@
         }
       }
     },
+	computed: {
+		...mapState('user', ['userInfo']),
+	},
     onReady() {
       this.$refs.form.setRules(this.rules)
     },
     methods: {
-		deleteFile(file){
+      deleteFile(file){
+		  console.log(this.userInfo)
 			let record = {
+				operator_id: this.userInfo._id,
+				// username: this.userInfo.username,
 				url: file.tempFile.url,
 				create_date: new Date().getTime()
 			}

@@ -21,34 +21,41 @@
         v-slot:default="{data,pagination,loading,error,options}" :options="options" loadtime="manual" @load="onqueryload">
         <uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe type="selection" @selection-change="selectionChange">
           <uni-tr>
-            <uni-th align="center">关联产品</uni-th>
             <uni-th align="center">关联企业</uni-th>
+            <uni-th align="center">关联产品</uni-th>
             <uni-th align="center" filter-type="select" :filter-data="options.filterData.status_localdata" @filter-change="filterChange($event, 'status')">项目状态</uni-th>
             <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'delivery_date')" sortable @sort-change="sortChange($event, 'delivery_date')">交付日期</uni-th>
             <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'comment')" sortable @sort-change="sortChange($event, 'comment')">备注</uni-th>
             <uni-th align="center" sortable @sort-change="sortChange($event, 'files')">相关附件</uni-th>
-            <uni-th align="center">项目经理</uni-th>
+            <uni-th align="center" sortable @sort-change="sortChange($event, 'creator_id')">创建者</uni-th>
             <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_date')" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
+            <uni-th align="center">项目经理</uni-th>
             <uni-th align="center">操作</uni-th>
           </uni-tr>
           <uni-tr v-for="(item,index) in data" :key="index">
-            <uni-td align="center">{{item.product_id && item.product_id[0] && item.product_id[0].text}}</uni-td>
             <uni-td align="center">{{item.company_id && item.company_id[0] && item.company_id[0].text}}</uni-td>
+            <uni-td align="center">{{item.product_id && item.product_id[0] && item.product_id[0].text}}</uni-td>
             <uni-td align="center">{{options.status_valuetotext[item.status]}}</uni-td>
             <uni-td align="center">
               <uni-dateformat :threshold="[0, 0]" :date="item.delivery_date"></uni-dateformat>
             </uni-td>
             <uni-td align="center">{{item.comment}}</uni-td>
             <uni-td align="center">
-				<template v-for="(file, ind) in item.files">
-					{{file.name}}
-					<template v-if="ind!==item.files.length-1">、</template>
-				</template>
-			</uni-td>
-            <uni-td align="center">{{item.member_ids && item.member_ids[0] && item.member_ids[0].text}}</uni-td>
+              <template v-for="(file, j) in item.files">
+                <uni-file-picker v-if="file.fileType == 'image'" :value="file" :file-mediatype="file.fileType" :imageStyles="imageStyles" readonly></uni-file-picker>
+                <uni-link v-else :href="file.url" :text="file.url"></uni-link>
+              </template>
+            </uni-td>
+            <uni-td align="center">{{item.creator_id && item.creator_id[0] && item.creator_id[0].text}}</uni-td>
             <uni-td align="center">
               <uni-dateformat :threshold="[0, 0]" :date="item.create_date"></uni-dateformat>
             </uni-td>
+            <uni-td align="center">
+				<template v-for="(member, ind) in item.member_ids">
+					{{member.text}}
+					<template v-if="ind!==item.member_ids.length-1">、</template>
+				</template>
+			</uni-td>
             <uni-td align="center">
               <view class="uni-group">
                 <button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
@@ -84,7 +91,7 @@
   export default {
     data() {
       return {
-        collectionList: [ db.collection('asst-projects').field('product_id,company_id,status,delivery_date,comment,files,member_ids,create_date').getTemp(),db.collection('asst-products').field('_id, name as text').getTemp(),db.collection('asst-companies').field('_id, name as text').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
+        collectionList: [ db.collection('asst-projects').field('company_id,product_id,status,delivery_date,comment,files,creator_id,create_date,member_ids').getTemp(),db.collection('asst-companies').field('_id, name as text').getTemp(),db.collection('asst-products').field('_id, name as text').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
         query: '',
         where: '',
         orderby: dbOrderBy,
@@ -127,14 +134,15 @@
           "filename": "asst-projects.xls",
           "type": "xls",
           "fields": {
-            "关联产品": "product_id",
             "关联企业": "company_id",
+            "关联产品": "product_id",
             "项目状态": "status",
             "交付日期": "delivery_date",
             "备注": "comment",
             "相关附件": "files",
-            "项目经理": "member_ids",
-            "创建时间": "create_date"
+            "创建者": "creator_id",
+            "创建时间": "create_date",
+            "项目经理": "member_ids"
           }
         },
         exportExcelData: []

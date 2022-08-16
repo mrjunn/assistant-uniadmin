@@ -1,15 +1,97 @@
 {
 	"bsonType": "object",
-	"required": [],
+	"required": ["project_id", "title"],
 	"permission": {
-		"read": false,
-		"create": false,
-		"update": false,
-		"delete": false
+		"read": "'READ_ASST_WORK_ORDERS' in auth.permission",
+		"create": "'CREATE_ASST_WORK_ORDERS' in auth.permission",
+		"update": "'UPDATE_ASST_WORK_ORDERS' in auth.permission",
+		"delete": "'DELETE_ASST_WORK_ORDERS' in auth.permission"
 	},
 	"properties": {
 		"_id": {
 			"description": "ID，系统自动生成"
+		},
+		"project_id": {
+			"bsonType": "string",
+			"title": "关联项目",
+			"description": "关联项目",
+			"foreignKey": "asst-projects._id",
+			"enum": {
+				"collection": "asst-projects,asst-companies,asst-products",
+				"field": "_id as value, concat(arrayElemAt(company_id.name,0),'-',arrayElemAt(product_id.name,0)) as text"
+			}
+		},
+		"title": {
+			"bsonType": "string",
+			"title": "标题",
+			"description": "工单标题",
+			"trim": "both",
+			"minLength": 4
+		},
+		"type": {
+			"bsonType": "string",
+			"description": "工单类型",
+			"title": "工单类型",
+			"defaultValue": "bug",
+			"enum": [{
+				"text": "Bug",
+				"value": "bug"
+			}, {
+				"text": "需求",
+				"value": "requirement"
+			}, {
+				"text": "运维",
+				"value": "maintenance"
+			}, {
+				"text": "采购",
+				"value": "purchase"
+			}, {
+				"text": "现场",
+				"value": "scene"
+			}, {
+				"text": "其他",
+				"value": "other"
+			}]
+		},
+		"info_id": {
+			"bsonType": "string",
+			"description": "工单详情id，如：类型选了bug，则工单详情表asst-work-order-info-bug中对应的id"
+		},
+		"status": {
+			"bsonType": "int",
+			"description": "状态",
+			"title": "工单状态",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "待审核",
+				"value": 0
+			}, {
+				"text": "审核未通过",
+				"value": 1
+			}, {
+				"text": "进行中",
+				"value": 2
+			}, {
+				"text": "完成",
+				"value": 3
+			}]
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"title": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"creator_id": {
+			"bsonType": "string",
+			"description": "创建者",
+			"title": "创建者",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
 		}
 	}
 }

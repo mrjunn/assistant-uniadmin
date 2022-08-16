@@ -2,110 +2,33 @@
 
 
 const validator = {
-  "company_id": {
+  "url": {
     "rules": [
-      {
-        "required": true
-      },
       {
         "format": "string"
       }
     ],
-    "label": "关联企业"
+    "label": "文件地址"
   },
-  "product_id": {
-    "rules": [
-      {
-        "required": true
-      },
-      {
-        "format": "string"
-      }
-    ],
-    "label": "关联产品"
-  },
-  "status": {
-    "rules": [
-      {
-        "format": "int"
-      },
-      {
-        "range": [
-          {
-            "text": "待启动",
-            "value": 0
-          },
-          {
-            "text": "开发中",
-            "value": 1
-          },
-          {
-            "text": "运维",
-            "value": 2
-          },
-          {
-            "text": "已完结",
-            "value": 3
-          },
-          {
-            "text": "停滞",
-            "value": 4
-          }
-        ]
-      }
-    ],
-    "defaultValue": 0,
-    "label": "项目状态"
-  },
-  "delivery_date": {
+  "create_date": {
     "rules": [
       {
         "format": "timestamp"
       }
     ],
-    "label": "交付日期"
+    "label": "删除日期"
   },
-  "comment": {
+  "operator_id": {
     "rules": [
       {
         "format": "string"
       }
     ],
-    "label": "备注"
-  },
-  "files": {
-    "rules": [
-      {
-        "format": "array"
-      },
-      {
-        "arrayType": "file"
-      },
-      {
-        "maxLength": 100
-      }
-    ],
-    "label": "相关附件"
-  },
-  "member_ids": {
-    "rules": [
-      {
-        "format": "array"
-      }
-    ],
-    "label": "项目经理"
+    "label": "操作者"
   }
 }
 
-const enumConverter = {
-  "status_valuetotext": {
-    "0": "待启动",
-    "1": "开发中",
-    "2": "运维",
-    "3": "已完结",
-    "4": "停滞"
-  }
-}
+const enumConverter = {}
 
 function filterToWhere(filter, command) {
   let where = {}

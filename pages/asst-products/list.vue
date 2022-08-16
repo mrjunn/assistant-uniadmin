@@ -26,6 +26,7 @@
             <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'comment')" sortable @sort-change="sortChange($event, 'comment')">备注</uni-th>
             <uni-th align="center">产品成员</uni-th>
             <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_date')" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
+            <uni-th align="center" sortable @sort-change="sortChange($event, 'creator_id')">创建者</uni-th>
             <uni-th align="center">操作</uni-th>
           </uni-tr>
           <uni-tr v-for="(item,index) in data" :key="index">
@@ -41,6 +42,7 @@
             <uni-td align="center">
               <uni-dateformat :threshold="[0, 0]" :date="item.create_date"></uni-dateformat>
             </uni-td>
+            <uni-td align="center">{{item.creator_id && item.creator_id[0] && item.creator_id[0].text}}</uni-td>
             <uni-td align="center">
               <view class="uni-group">
                 <button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
@@ -76,7 +78,7 @@
   export default {
     data() {
       return {
-        collectionList: [ db.collection('asst-products').field('name,enable,comment,member_ids,create_date').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
+        collectionList: [ db.collection('asst-products').field('name,enable,comment,member_ids,create_date,creator_id').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
         query: '',
         where: '',
         orderby: dbOrderBy,
@@ -100,7 +102,8 @@
             "产品状态": "enable",
             "备注": "comment",
             "产品成员": "member_ids",
-            "创建时间": "create_date"
+            "创建时间": "create_date",
+            "创建者": "creator_id"
           }
         },
         exportExcelData: []
