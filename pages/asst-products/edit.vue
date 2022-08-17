@@ -10,6 +10,9 @@
       <uni-forms-item name="comment" label="备注">
         <textarea placeholder="备注" @input="binddata('comment', $event.detail.value)" class="uni-textarea-border" v-model="formData.comment" trim="both"></textarea>
       </uni-forms-item>
+      <uni-forms-item name="files" label="相关附件">
+        <uni-file-picker file-mediatype="all" :limit="100" return-type="array" v-model="formData.files" @delete="deleteFile"></uni-file-picker>
+      </uni-forms-item>
       <uni-forms-item name="member_ids" label="产品成员">
         <uni-data-checkbox :multiple="true" v-model="formData.member_ids" collection="uni-id-users" where="company_id=='62f73b1d7f623b0001139e88'" field="_id as value, username as text"></uni-data-checkbox>
       </uni-forms-item>
@@ -48,6 +51,7 @@
         "name": "",
         "enable": true,
         "comment": "",
+        "files": [],
         "member_ids": []
       }
       return {
@@ -69,7 +73,17 @@
       this.$refs.form.setRules(this.rules)
     },
     methods: {
-      
+		deleteFile(file){
+			let record = {
+				url: file.tempFile.url
+			}
+			const db = uniCloud.database();
+			db.collection('asst-deleted-files').add(record).then(res=>{
+				console.log('asst-deleted-files.add', res);
+			}).catch(err=>{
+				console.log('asst-deleted-files.add fail', err);
+			})
+		},
       /**
        * 验证表单并提交
        */
@@ -112,7 +126,7 @@
         uni.showLoading({
           mask: true
         })
-        db.collection(dbCollectionName).doc(id).field("name,enable,comment,member_ids").get().then((res) => {
+        db.collection(dbCollectionName).doc(id).field("name,enable,comment,files,member_ids").get().then((res) => {
           const data = res.result.data[0]
           if (data) {
             this.formData = data

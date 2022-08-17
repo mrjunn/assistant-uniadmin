@@ -51,6 +51,14 @@
 				"name": "textarea"
 			}
 		},
+		"files": {
+			"bsonType": "array",
+			"arrayType": "file",
+			"title": "相关附件",
+			"multiple": true,
+			"fileMediaType": "all",
+			"maxLength": 100
+		},
 		"create_date": {
 			"bsonType": "timestamp",
 			"description": "创建时间",

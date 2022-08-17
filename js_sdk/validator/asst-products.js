@@ -33,6 +33,20 @@ const validator = {
     ],
     "label": "备注"
   },
+  "files": {
+    "rules": [
+      {
+        "format": "array"
+      },
+      {
+        "arrayType": "file"
+      },
+      {
+        "maxLength": 100
+      }
+    ],
+    "label": "相关附件"
+  },
   "member_ids": {
     "rules": [
       {

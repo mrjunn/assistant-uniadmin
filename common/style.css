@@ -1,6 +1,9 @@
 .uni-forms-item .uni-data-checklist {
 	margin-top: 6px !important;
 }
+.uni-forms-item .uni-file-picker {
+	margin-top: 4px !important;
+}
 
 /* .login-box .uni-forms-item__label {
 	width: 65px !important;
