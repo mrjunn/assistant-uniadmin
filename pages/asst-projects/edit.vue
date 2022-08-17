@@ -104,10 +104,9 @@
       this.$refs.form.setRules(this.rules)
     },
     methods: {
-      deleteFile(file){
+       deleteFile(file){
 			let record = {
-				url: file.tempFile.url,
-				create_date: new Date().getTime()
+				url: file.tempFile.url
 			}
 			const db = uniCloud.database();
 			db.collection('asst-deleted-files').add(record).then(res=>{

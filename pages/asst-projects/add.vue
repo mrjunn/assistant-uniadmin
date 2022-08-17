@@ -33,8 +33,6 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-	
   import { validator } from '../../js_sdk/validator/asst-projects.js';
 
   const db = uniCloud.database();
@@ -95,20 +93,13 @@
         }
       }
     },
-	computed: {
-		...mapState('user', ['userInfo']),
-	},
     onReady() {
       this.$refs.form.setRules(this.rules)
     },
     methods: {
-      deleteFile(file){
-		  console.log(this.userInfo)
+		deleteFile(file){
 			let record = {
-				operator_id: this.userInfo._id,
-				// username: this.userInfo.username,
-				url: file.tempFile.url,
-				create_date: new Date().getTime()
+				url: file.tempFile.url
 			}
 			const db = uniCloud.database();
 			db.collection('asst-deleted-files').add(record).then(res=>{
