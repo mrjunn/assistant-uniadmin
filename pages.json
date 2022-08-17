@@ -1,7 +1,7 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index"
+			"path": "pages/asst-index/index"
 		}, {
 			"path": "pages/login/login",
 			"style": {
@@ -172,6 +172,11 @@
 			"path": "user/list",
 			"style": {
 				"navigationBarTitleText": "用户管理"
+			}
+		}, {
+			"path": "app/index/index",
+			"style": {
+				"navigationBarTitleText": "应用中心"
 			}
 		}, {
 			"path": "app/add",
@@ -384,7 +389,7 @@
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "管理系统",
+		"navigationBarTitleText": "项目助理",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
