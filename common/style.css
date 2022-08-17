@@ -15,3 +15,10 @@
 ::v-deep .uni-forms-item__label {
 	width: 90px !important;
 }
+
+uni-button[type="warm"] {
+	color: #fff;
+    background-color: #E6A23C;
+    border-color: #E6A23C;
+    border-width: 0;
+}

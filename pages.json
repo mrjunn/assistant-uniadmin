@@ -89,12 +89,14 @@
 		}, {
 			"path": "pages/asst-work-orders/add",
 			"style": {
-				"navigationBarTitleText": "新增工单"
+				"navigationBarTitleText": "新增工单",
+				"navigationStyle": "default"
 			}
 		}, {
 			"path": "pages/asst-work-orders/edit",
 			"style": {
-				"navigationBarTitleText": "编辑工单"
+				"navigationBarTitleText": "编辑工单",
+				"navigationStyle": "default"
 			}
 		}, {
 			"path": "pages/asst-work-orders/list",
@@ -199,12 +201,14 @@
 		}, {
 			"path": "tag/add",
 			"style": {
-				"navigationBarTitleText": "新增标签"
+				"navigationBarTitleText": "新增标签",
+				"navigationStyle": "default"
 			}
 		}, {
 			"path": "tag/edit",
 			"style": {
-				"navigationBarTitleText": "修改标签"
+				"navigationBarTitleText": "修改标签",
+				"navigationStyle": "default"
 			}
 		}, {
 			"path": "tag/list",

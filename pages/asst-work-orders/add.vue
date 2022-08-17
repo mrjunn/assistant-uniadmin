@@ -103,6 +103,12 @@
         }
       }
     },
+	onLoad(e) {
+	  if (e.id) {
+	    const id = e.id;
+	    this.formData.project_id = id;
+	  }
+	},
     onReady() {
       this.$refs.form.setRules(this.rules)
     },
