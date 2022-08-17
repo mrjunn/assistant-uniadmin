@@ -568,7 +568,7 @@ exports.main = async (event, context) => {
 			} = await uniID.getUserInfo({
 				uid: params.uid
 			})
-			if (userInfo.role.indexOf('admin') === -1) {
+			if (userInfo.role.indexOf('admin') === -1 && userInfo.role.indexOf('asst_admin') === -1) {
 				res = {
 					code: 403,
 					message: '非法访问, 无权限注册超级管理员',
@@ -599,7 +599,7 @@ exports.main = async (event, context) => {
 			} = await uniID.getUserInfo({
 				uid: params.uid
 			})
-			if (userInfo.role.indexOf('admin') === -1) {
+			if (userInfo.role.indexOf('admin') === -1 && userInfo.role.indexOf('asst_admin') === -1) {
 				res = {
 					code: 403,
 					message: '非法访问, 无权限注册超级管理员',
