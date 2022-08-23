@@ -16,15 +16,6 @@ const validator = {
     ],
     "label": "产品名称"
   },
-  "enable": {
-    "rules": [
-      {
-        "format": "bool"
-      }
-    ],
-    "defaultValue": true,
-    "label": "产品状态"
-  },
   "comment": {
     "rules": [
       {
@@ -47,6 +38,22 @@ const validator = {
     ],
     "label": "相关附件"
   },
+  "menus": {
+    "rules": [
+      {
+        "format": "string"
+      }
+    ],
+    "label": "模块菜单"
+  },
+  "steps": {
+    "rules": [
+      {
+        "format": "array"
+      }
+    ],
+    "label": "基础进程"
+  },
   "member_ids": {
     "rules": [
       {
@@ -54,6 +61,15 @@ const validator = {
       }
     ],
     "label": "产品成员"
+  },
+  "enable": {
+    "rules": [
+      {
+        "format": "bool"
+      }
+    ],
+    "defaultValue": true,
+    "label": "产品状态"
   }
 }
 

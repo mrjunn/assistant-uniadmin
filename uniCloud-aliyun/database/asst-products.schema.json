@@ -59,6 +59,21 @@
 			"fileMediaType": "all",
 			"maxLength": 100
 		},
+		"menus": {
+			"bsonType": "string",
+			"title": "模块菜单",
+			"description": "一个软件类型产品，设定一个通用的软件系统模块菜单，方便对应的项目后续关联工单等，json字符串",
+			"trim": "both",
+			"component": {
+				"name": "textarea",
+				"maxlength": -1
+			}
+		},
+		"steps": {
+			"bsonType": "array",
+			"description": "设定一个关联该产品的基础项目进程，以免重复设定",
+			"title": "基础进程"
+		},
 		"create_date": {
 			"bsonType": "timestamp",
 			"description": "创建时间",
