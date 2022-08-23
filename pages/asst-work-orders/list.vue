@@ -7,8 +7,8 @@
 					:placeholder="$t('common.placeholder.query')" />
 				<button class="uni-button hide-on-phone" type="default" size="mini"
 					@click="search">{{$t('common.button.search')}}</button>
-				<button class="uni-button" type="primary" size="mini"
-					@click="navigateTo('./add')">{{$t('common.button.add')}}</button>
+				<!-- <button class="uni-button" type="primary" size="mini"
+					@click="navigateTo('./add')">{{$t('common.button.add')}}</button> -->
 				<button class="uni-button" type="warn" size="mini" :disabled="!selectedIndexs.length"
 					@click="delTable">{{$t('common.button.batchDelete')}}</button>
 				<!-- #ifdef H5 -->
@@ -19,43 +19,43 @@
 				<!-- #endif -->
 			</view>
 		</view>
-		<view class="uni-container">
-		  <unicloud-db ref="udb" :collection="collectionList" :where="where" page-data="replace"
-			:orderby="orderby" :getcount="true" :page-size="options.pageSize" :page-current="options.pageCurrent"
-			v-slot:default="{data,pagination,loading,error,options}" :options="options" loadtime="manual" @load="onqueryload">
-			<uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe type="selection" @selection-change="selectionChange">
-			  <uni-tr>
-				<uni-th align="center">关联项目</uni-th>
-				<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'title')" sortable @sort-change="sortChange($event, 'title')">标题</uni-th>
-				<uni-th align="center" filter-type="select" :filter-data="options.filterData.type_localdata" @filter-change="filterChange($event, 'type')">工单类型</uni-th>
-				<uni-th align="center" filter-type="select" :filter-data="options.filterData.status_localdata" @filter-change="filterChange($event, 'status')">工单状态</uni-th>
-				<uni-th align="center" sortable @sort-change="sortChange($event, 'creator_id')">创建者</uni-th>
-				<uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_date')" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
-				<uni-th align="center">操作</uni-th>
-			  </uni-tr>
-			  <uni-tr v-for="(item,index) in data" :key="index">
-				<uni-td align="center">{{item.project_id && item.project_id[0] && item.project_id[0].text}}</uni-td>
-				<uni-td align="center">{{item.title}}</uni-td>
-				<uni-td align="center">{{options.type_valuetotext[item.type]}}</uni-td>
-				<uni-td align="center">{{options.status_valuetotext[item.status]}}</uni-td>
-				<uni-td align="center">{{item.creator_id && item.creator_id[0] && item.creator_id[0].text}}</uni-td>
-				<uni-td align="center">
-				  <uni-dateformat :threshold="[0, 0]" :date="item.create_date"></uni-dateformat>
-				</uni-td>
-				<uni-td align="center">
-				  <view class="uni-group">
-					<button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
-					<button @click="confirmDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
-				  </view>
-				</uni-td>
-			  </uni-tr>
-			</uni-table>
-			<view class="uni-pagination-box">
-			  <uni-pagination show-icon :page-size="pagination.size" v-model="pagination.current" :total="pagination.count" @change="onPageChanged" />
-			</view>
-		  </unicloud-db>
-		</view>
-	</view>
+    <view class="uni-container">
+      <unicloud-db ref="udb" :collection="collectionList" :where="where" page-data="replace"
+        :orderby="orderby" :getcount="true" :page-size="options.pageSize" :page-current="options.pageCurrent"
+        v-slot:default="{data,pagination,loading,error,options}" :options="options" loadtime="manual" @load="onqueryload">
+        <uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe type="selection" @selection-change="selectionChange">
+          <uni-tr>
+            <uni-th align="center">关联项目</uni-th>
+            <uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'title')" sortable @sort-change="sortChange($event, 'title')">标题</uni-th>
+            <uni-th align="center" filter-type="select" :filter-data="options.filterData.type_localdata" @filter-change="filterChange($event, 'type')">工单类型</uni-th>
+            <uni-th align="center" filter-type="select" :filter-data="options.filterData.status_localdata" @filter-change="filterChange($event, 'status')">工单状态</uni-th>
+            <uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_date')" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
+            <uni-th align="center" sortable @sort-change="sortChange($event, 'creator_id')">创建者</uni-th>
+            <uni-th align="center">操作</uni-th>
+          </uni-tr>
+          <uni-tr v-for="(item,index) in data" :key="index">
+            <uni-td align="center">{{item.project_id && item.project_id[0] && item.project_id[0].text}}</uni-td>
+            <uni-td align="center">{{item.title}}</uni-td>
+            <uni-td align="center">{{options.type_valuetotext[item.type]}}</uni-td>
+            <uni-td align="center">{{options.status_valuetotext[item.status]}}</uni-td>
+            <uni-td align="center">
+              <uni-dateformat :threshold="[0, 0]" :date="item.create_date"></uni-dateformat>
+            </uni-td>
+            <uni-td align="center">{{item.creator_id && item.creator_id[0] && item.creator_id[0].text}}</uni-td>
+            <uni-td align="center">
+              <view class="uni-group">
+                <button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
+                <button @click="confirmDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
+              </view>
+            </uni-td>
+          </uni-tr>
+        </uni-table>
+        <view class="uni-pagination-box">
+          <uni-pagination show-icon :page-size="pagination.size" v-model="pagination.current" :total="pagination.count" @change="onPageChanged" />
+        </view>
+      </unicloud-db>
+    </view>
+  </view>
 </template>
 
 <script>
@@ -77,7 +77,7 @@
   export default {
     data() {
       return {
-        collectionList: [ db.collection('asst-work-orders').field('project_id,title,type,status,creator_id,create_date').getTemp(),db.collection('asst-projects').field('_id, concat(arrayElemAt(company_id.name,0),arrayElemAt(product_id.name,0)) as text').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
+        collectionList: [ db.collection('asst-work-orders').field('project_id,title,type,status,create_date,creator_id').getTemp(),db.collection('asst-projects').field('_id, _id as text').getTemp(),db.collection('uni-id-users').field('_id, username as text').getTemp() ],
         query: '',
         where: '',
         orderby: dbOrderBy,
@@ -146,8 +146,8 @@
             "标题": "title",
             "工单类型": "type",
             "工单状态": "status",
-            "创建者": "creator_id",
-            "创建时间": "create_date"
+            "创建时间": "create_date",
+            "创建者": "creator_id"
           }
         },
         exportExcelData: []

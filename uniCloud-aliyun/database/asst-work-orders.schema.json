@@ -11,14 +11,24 @@
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
+		// "project_id": {
+		// 	"bsonType": "string",
+		// 	"title": "关联项目",
+		// 	"description": "关联项目",
+		// 	"foreignKey": "asst-projects._id",
+		// 	"enum": {
+		// 		"collection": "asst-projects,asst-companies,asst-products",
+		// 		"field": "_id as value, concat(arrayElemAt(company_id.name,0),'-',arrayElemAt(product_id.name,0)) as text"
+		// 	}
+		// },
 		"project_id": {
 			"bsonType": "string",
 			"title": "关联项目",
 			"description": "关联项目",
 			"foreignKey": "asst-projects._id",
 			"enum": {
-				"collection": "asst-projects,asst-companies,asst-products",
-				"field": "_id as value, concat(arrayElemAt(company_id.name,0),'-',arrayElemAt(product_id.name,0)) as text"
+				"collection": "asst-projects",
+				"field": "_id as value, _id as text"
 			}
 		},
 		"title": {
