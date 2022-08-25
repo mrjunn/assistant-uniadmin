@@ -1,0 +1,39 @@
+// woi: work order info
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": "'READ_ASST_WORK_ORDERS' in auth.permission",
+		"create": "'CREATE_ASST_WORK_ORDERS' in auth.permission",
+		"update": "'UPDATE_ASST_WORK_ORDERS' in auth.permission",
+		"delete": "'DELETE_ASST_WORK_ORDERS' in auth.permission"
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"menu": {
+			"bsonType": "string",
+			"description": "模块菜单",
+			"title": "模块菜单"
+		},
+		"comment": {
+			"bsonType": "string",
+			"description": "备注",
+			"label": "备注",
+			"title": "备注",
+			"trim": "both",
+			"component": {
+				"name": "textarea"
+			}
+		},
+		"files": {
+			"bsonType": "array",
+			"arrayType": "file",
+			"title": "相关附件",
+			"multiple": true,
+			"fileMediaType": "all",
+			"maxLength": 100
+		}
+	}
+}

@@ -63,7 +63,7 @@
 				</uni-td>
 				<uni-td align="center">
 				  <view class="uni-group">
-					<button @click="navigateTo(`../asst-work-orders/add?id=${item._id}&project_name=${item.company_id[0].text}-${item.product_id[0].text}`, false)" class="uni-button" size="mini" type="warm" title="创建工单">+工单</button>
+					<button @click="navigateTo(`../asst-work-orders/add?project_id=${item._id}&project_name=${item.company_id[0].text}-${item.product_id[0].text}&product_id=${item.product_id[0]._id}`, false)" class="uni-button" size="mini" type="warm" title="创建工单">+工单</button>
 					<button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
 					<button @click="confirmDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
 				  </view>

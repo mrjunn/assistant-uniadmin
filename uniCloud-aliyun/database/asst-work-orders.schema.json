@@ -63,9 +63,9 @@
 				"value": "other"
 			}]
 		},
-		"info_id": {
-			"bsonType": "string",
-			"description": "工单详情id，如：类型选了bug，则工单详情表asst-work-order-info-bug中对应的id"
+		"info": {
+			"bsonType": "object",
+			"description": "工单详情，不同类型工单其详情schema不同"
 		},
 		"status": {
 			"bsonType": "int",

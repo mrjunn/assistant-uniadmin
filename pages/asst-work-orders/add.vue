@@ -2,14 +2,16 @@
   <view class="uni-container">
     <uni-forms ref="form" :model="formData" validateTrigger="bind">
       <uni-forms-item name="project_id" label="关联项目" required>
-        <uni-data-picker :placeholder="project_name?project_name:'请选择'" :readonly="project_name?true:false" v-model="formData.project_id" collection="asst-projects" field="_id as value, _id as text"></uni-data-picker>
+        <uni-data-picker :placeholder="project_name" readonly v-model="formData.project_id" collection="asst-projects" field="_id as value, _id as text"></uni-data-picker>
       </uni-forms-item>
       <uni-forms-item name="title" label="标题" required>
         <uni-easyinput placeholder="工单标题" v-model="formData.title" trim="both"></uni-easyinput>
       </uni-forms-item>
       <uni-forms-item name="type" label="工单类型">
-        <uni-data-checkbox v-model="formData.type" :localdata="formOptions.type_localdata"></uni-data-checkbox>
+        <uni-data-checkbox v-model="formData.type" :localdata="formOptions.type_localdata" @change="initComponent"></uni-data-checkbox>
       </uni-forms-item>
+	  <!-- 工单详情组件 -->
+	  <component ref="info" :is="component" :product_id="product_id" @setInfo="setInfo" style="margin-bottom: 22px;"></component>
       <uni-forms-item name="status" label="工单状态">
         <uni-data-checkbox v-model="formData.status" :localdata="formOptions.status_localdata"></uni-data-checkbox>
       </uni-forms-item>
@@ -51,7 +53,10 @@
         "status": 0
       }
       return {
-		project_name: '',
+		component: null,
+		project_name: '请选择',
+		product_id: '',
+		submitData: null,
         formData,
         formOptions: {
           "type_localdata": [
@@ -105,25 +110,43 @@
       }
     },
 	onLoad(e) {
-	  if (e.id) {
-		this.project_name = e.project_name;
-	    this.formData.project_id = e.id;
-	  }
+	    if(e.project_id) {
+			this.formData.project_id = e.project_id;
+			this.project_name = e.project_name;
+			this.product_id = e.product_id;
+			// 插入工单详情组件
+			this.initComponent();
+		}
 	},
     onReady() {
       this.$refs.form.setRules(this.rules)
     },
     methods: {
-      
+      /**
+	   * 切换工单类型
+	   */
+	  initComponent() {
+		  this.component = (resolve) => require([`@/pages/asst-work-orders/info-${this.formData.type}/add`], resolve);
+	  },
+	  
+	  /**
+	   * 给工单详情info属性赋值
+	   */
+	  setInfo(info) {
+		  this.submitData['info'] = info;
+		  this.submitForm(this.submitData)
+	  },
+	  
       /**
        * 验证表单并提交
        */
       submit() {
         uni.showLoading({
-          mask: true
+			mask: true
         })
         this.$refs.form.validate().then((res) => {
-          return this.submitForm(res)
+			this.submitData = res;
+			this.$refs.info.submit()
         }).catch(() => {
         }).finally(() => {
           uni.hideLoading()

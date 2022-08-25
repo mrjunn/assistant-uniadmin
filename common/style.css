@@ -21,3 +21,11 @@ uni-button[type="warm"] {
     border-color: #E6A23C;
     border-width: 0;
 }
+
+.work-order-info {
+	border: 2px dashed lightgray;
+	border-radius: 5px;
+}
+.work-order-info .uni-forms-item:last-child {
+	margin-bottom: 0;
+}
