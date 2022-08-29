@@ -36,9 +36,6 @@
 			},
 			"componentForEdit": {
 				"name": "uni-data-checkbox"
-			},
-			"permission": {
-				"write": false
 			}
 		},
 		"comment": {
