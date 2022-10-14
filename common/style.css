@@ -29,3 +29,19 @@ uni-button[type="warm"] {
 .work-order-info .uni-forms-item:last-child {
 	margin-bottom: 0;
 }
+/* data-picker tree input框超出元素（pc端会挡住下拉框） */
+/* .udp .uni-forms-item__content, .udp .uni-scroll-view>.uni-scroll-view {
+	overflow: hidden!important;
+}
+.udp .uni-icons.uniui-clear{
+	padding-left: 5px;
+} */
+
+
+
+/**
+ * 通用样式
+ */
+.hd {
+	overflow: hidden;
+}

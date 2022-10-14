@@ -1,7 +1,8 @@
 <template>
   <view class="uni-container work-order-info">
     <uni-forms ref="form" :model="formData" validateTrigger="bind">
-      <uni-forms-item name="menu" label="模块菜单">
+      <!-- <uni-forms-item name="menu" label="模块菜单" class="udp"> -->
+	  <uni-forms-item name="menu" label="模块菜单">
 		<uni-data-picker v-model="formData.menu" :localdata="menus" :map="{text:'name',value:'id'}"></uni-data-picker>
       </uni-forms-item>
       <uni-forms-item name="comment" label="备注">

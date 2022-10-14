@@ -9,4 +9,7 @@
 // 详细JQL语法，请参考：https://uniapp.dcloud.net.cn/uniCloud/jql.html
 
 // 下面示例查询uni-id-users表的所有数据
-db.collection('uni-id-users').get();
+db.collection('uni-id-users').where('_id == "62f35aebfbda600001ed5e13"').field('_id as value,username as text').get();
+// db.collection('asst-projects,asst-products').field('_id as value, arrayElemAt(product_id.name,0) as text').get()
+
+db.collection('asst-projects,asst-companies,asst-products').field('{"id":_id,"name3":text} as value, concat(arrayElemAt(company_id.name,0),arrayElemAt(product_id.name,0)) as text').get()
